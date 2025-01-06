@@ -1,82 +1,89 @@
-import { Container, Grid, Typography, Box, TextField, InputAdornment } from '@mui/material';
-import { Search as SearchIcon } from '@mui/icons-material';
 import { useState } from 'react';
+import {
+  Container,
+  Grid,
+  Typography,
+  TextField,
+  InputAdornment,
+  Box,
+} from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
 import CategoryCard from '../components/CategoryCard';
 import { Category } from '../types/category';
 
-// Örnek kategori verileri
-const sampleCategories: Category[] = [
+const categories: Category[] = [
   {
     id: 1,
     name: 'Ana Yemekler',
-    image: 'https://via.placeholder.com/400x300',
+    slug: 'ana-yemekler',
     description: 'Birbirinden lezzetli ana yemek tarifleri',
-    recipeCount: 125,
-    slug: 'ana-yemekler'
+    image: 'https://via.placeholder.com/400x300',
+    recipeCount: 125
   },
   {
     id: 2,
     name: 'Çorbalar',
-    image: 'https://via.placeholder.com/400x300',
+    slug: 'corbalar',
     description: 'Sıcacık çorba tarifleri',
-    recipeCount: 45,
-    slug: 'corbalar'
+    image: 'https://via.placeholder.com/400x300',
+    recipeCount: 45
   },
   {
     id: 3,
     name: 'Tatlılar',
-    image: 'https://via.placeholder.com/400x300',
+    slug: 'tatlilar',
     description: 'Enfes tatlı tarifleri',
-    recipeCount: 80,
-    slug: 'tatlilar'
+    image: 'https://via.placeholder.com/400x300',
+    recipeCount: 78
   },
   {
     id: 4,
     name: 'Salatalar',
+    slug: 'salatalar',
+    description: 'Sağlıklı salata tarifleri',
     image: 'https://via.placeholder.com/400x300',
-    description: 'Sağlıklı ve lezzetli salata tarifleri',
-    recipeCount: 60,
-    slug: 'salatalar'
+    recipeCount: 56
   },
   {
     id: 5,
     name: 'Kahvaltılıklar',
-    image: 'https://via.placeholder.com/400x300',
+    slug: 'kahvaltiliklar',
     description: 'Güne güzel başlamak için kahvaltılık tarifler',
-    recipeCount: 55,
-    slug: 'kahvaltiliklar'
+    image: 'https://via.placeholder.com/400x300',
+    recipeCount: 92
   },
   {
     id: 6,
-    name: 'Mezeler',
+    name: 'Atıştırmalıklar',
+    slug: 'atistirmaliklar',
+    description: 'Pratik atıştırmalık tarifleri',
     image: 'https://via.placeholder.com/400x300',
-    description: 'Sofralarınızı renklendirecek meze tarifleri',
-    recipeCount: 70,
-    slug: 'mezeler'
+    recipeCount: 67
   },
   {
     id: 7,
     name: 'İçecekler',
-    image: 'https://via.placeholder.com/400x300',
+    slug: 'icecekler',
     description: 'Serinleten içecek tarifleri',
-    recipeCount: 30,
-    slug: 'icecekler'
+    image: 'https://via.placeholder.com/400x300',
+    recipeCount: 34
   },
   {
     id: 8,
     name: 'Hamur İşleri',
-    image: 'https://via.placeholder.com/400x300',
+    slug: 'hamur-isleri',
     description: 'Nefis hamur işi tarifleri',
-    recipeCount: 90,
-    slug: 'hamur-isleri'
+    image: 'https://via.placeholder.com/400x300',
+    recipeCount: 89
   }
 ];
 
 const Categories = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredCategories = sampleCategories.filter(category =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    category.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -85,31 +92,37 @@ const Categories = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Yemek Kategorileri
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-          İstediğiniz kategoriden binlerce tarife ulaşın
+        <Typography variant="subtitle1" color="text.secondary" paragraph>
+          Birbirinden lezzetli tarifleri kategorilere göre keşfedin
         </Typography>
-        
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Kategori ara..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ mt: 2 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
       </Box>
+
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder="Kategori ara..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        sx={{ mb: 4 }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
 
       <Grid container spacing={3}>
         {filteredCategories.map((category) => (
-          <Grid item key={category.id} xs={12} sm={6} md={4} lg={3}>
-            <CategoryCard category={category} />
+          <Grid item xs={12} sm={6} md={4} lg={3} key={category.id}>
+            <CategoryCard
+              id={category.id}
+              name={category.name}
+              slug={category.slug}
+              image={category.image}
+              recipeCount={category.recipeCount}
+            />
           </Grid>
         ))}
       </Grid>

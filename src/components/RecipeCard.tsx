@@ -1,17 +1,20 @@
-import { Card, CardContent, CardMedia, Typography, CardActions, IconButton, Chip, Box } from '@mui/material';
-import { Favorite, AccessTime, Star } from '@mui/icons-material';
+import { Card, CardContent, CardMedia, Typography, Box, Rating } from '@mui/material';
+import { AccessTime } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 interface RecipeCardProps {
   id: number;
   title: string;
   image: string;
-  duration: string;
-  difficulty: string;
+  description: string;
+  prepTime: number;
+  cookTime: number;
+  totalTime: number;
+  servings: number;
   rating: number;
 }
 
-const RecipeCard = ({ id, title, image, duration, difficulty, rating }: RecipeCardProps) => {
+const RecipeCard = ({ id, title, image, description, prepTime, cookTime, totalTime, rating }: RecipeCardProps) => {
   const navigate = useNavigate();
 
   return (
@@ -31,7 +34,7 @@ const RecipeCard = ({ id, title, image, duration, difficulty, rating }: RecipeCa
     >
       <CardMedia
         component="img"
-        height="200"
+        height="140"
         image={image}
         alt={title}
       />
@@ -39,35 +42,22 @@ const RecipeCard = ({ id, title, image, duration, difficulty, rating }: RecipeCa
         <Typography gutterBottom variant="h6" component="div">
           {title}
         </Typography>
-        <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-          <Chip
-            icon={<AccessTime sx={{ fontSize: 16 }} />}
-            label={duration}
-            size="small"
-          />
-          <Chip
-            label={difficulty}
-            size="small"
-            color="primary"
-          />
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {description}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+          <AccessTime sx={{ mr: 1, fontSize: 20 }} />
+          <Typography variant="body2" color="text.secondary">
+            {totalTime} dakika
+          </Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {[...Array(5)].map((_, index) => (
-            <Star
-              key={index}
-              sx={{
-                color: index < rating ? 'primary.main' : 'grey.300',
-                fontSize: 20
-              }}
-            />
-          ))}
+          <Rating value={rating} readOnly size="small" />
+          <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+            ({rating}/5)
+          </Typography>
         </Box>
       </CardContent>
-      <CardActions disableSpacing onClick={(e) => e.stopPropagation()}>
-        <IconButton aria-label="add to favorites">
-          <Favorite />
-        </IconButton>
-      </CardActions>
     </Card>
   );
 };

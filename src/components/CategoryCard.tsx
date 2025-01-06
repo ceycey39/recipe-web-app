@@ -1,51 +1,42 @@
 import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
-import { Restaurant } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { Category } from '../types/category';
 
 interface CategoryCardProps {
-  category: Category;
+  id: number;
+  name: string;
+  slug: string;
+  image: string;
+  recipeCount: number;
 }
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({ name, image, slug, recipeCount }: CategoryCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <Card
-      sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
+    <Card 
+      sx={{ 
+        height: '100%', 
         cursor: 'pointer',
         '&:hover': {
-          transform: 'translateY(-4px)',
-          transition: 'transform 0.2s ease-in-out',
-          boxShadow: (theme) => theme.shadows[4]
+          transform: 'scale(1.02)',
+          transition: 'transform 0.2s ease-in-out'
         }
       }}
-      onClick={() => navigate(`/category/${category.slug}`)}
+      onClick={() => navigate(`/category/${slug}`)}
     >
       <CardMedia
         component="img"
-        height="160"
-        image={category.image}
-        alt={category.name}
-        sx={{
-          objectFit: 'cover',
-          filter: 'brightness(0.8)'
-        }}
+        height="140"
+        image={image}
+        alt={name}
       />
-      <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
+      <CardContent>
         <Typography gutterBottom variant="h6" component="div">
-          {category.name}
+          {name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          {category.description}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-          <Restaurant fontSize="small" color="action" />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="body2" color="text.secondary">
-            {category.recipeCount} Tarif
+            {recipeCount} Tarif
           </Typography>
         </Box>
       </CardContent>
